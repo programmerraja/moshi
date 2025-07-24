@@ -16,8 +16,10 @@ export const encodeMessage = (message: WSMessage): Uint8Array => {
       ]);
     case "audio":
       return new Uint8Array([0x01, ...message.data]);
+    case "pcm_audio":
+      return new Uint8Array([0x01, ...message.data]);
     case "text":
-      return new Uint8Array([0x02, ...new TextEncoder().encode(message.data)]);
+      return new Uint8Array([0x03, ...new TextEncoder().encode(message.data)]);
     case "coloredtext":
       return new Uint8Array([0x02, 0x05, ...new TextEncoder().encode(message.data)]);
     case "control":
@@ -51,6 +53,11 @@ export const decodeMessage = (data: Uint8Array): WSMessage => {
         data: payload,
       };
     case 0x02:
+      return {
+        type: "pcm_audio",
+        data: payload,
+      };
+    case 0x03:
       return {
         type: "text",
         data: new TextDecoder().decode(payload),

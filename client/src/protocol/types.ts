@@ -1,6 +1,7 @@
 export type MessageType =
   | "handshake"
   | "audio"
+  | "pcm_audio"
   | "text"
   | "coloredtext"
   | "control"
@@ -26,6 +27,10 @@ export type WSMessage =
   }
   | {
     type: "audio";
+    data: Uint8Array;
+  }
+  | {
+    type: "pcm_audio";
     data: Uint8Array;
   }
   | {
